@@ -13,6 +13,7 @@ def draw_histogram(data, bins, xlabel, ylabel, title, plot_mean = False):
         xlabel: label for X-axis
         ylabel: label for Y-axis
         title: title of the histogram
+        plot_mean: print the mean or not? defaults to False
     Returns:
         No return - only plots the histogram
     """
@@ -35,7 +36,19 @@ def draw_histogram(data, bins, xlabel, ylabel, title, plot_mean = False):
     plt.show()
 
 def plot_scatter(data_x, data_y, xlabel, ylabel, title, plot_line = False):
-        
+    """
+    Plots a basic scatter with the line of best fit
+    Arguments:
+        data_x: an array of datapoints for X-axis
+        data_y: an array of datapoints for Y-axis
+        xlabel: label for X-axis
+        ylabel: label for Y-axis
+        title: title of the Scatter Plot
+        plot_line: Plot line of best fit or not - defaults to False
+    Returns:
+        No return - only plots the scatter plot
+    """
+
     if plot_line:
         #find line of best fit
         a, b = np.polyfit(data_x, data_y, 1)
