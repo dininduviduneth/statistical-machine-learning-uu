@@ -21,13 +21,13 @@ def get_all_feature_combinations(data_columns):
     "powerset([1,2,3]) --> () (1,) (2,) (3,) (1,2) (1,3) (2,3) (1,2,3)"
     feature_combinations = list(chain.from_iterable(combinations(data_columns, r) for r in range(len(data_columns)+1)))
 
-    feature_combinations_v2 = []
+    feature_combinations_set = []
     for feature_combination in feature_combinations:
-        feature_combination = []
+        feature_combination_set = []
         for feature in feature_combination:
-            feature_combination.append(feature)
+            feature_combination_set.append(feature)
         
-        feature_combinations_v2.append(feature_combination)
+        feature_combinations_set.append(feature_combination_set)
 
-    return feature_combinations_v2
+    return feature_combinations_set
 
