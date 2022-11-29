@@ -149,7 +149,7 @@ def model_iterator_cv(X, y, feature_combinations, iterations):
 
     for iteration in range(1, iterations + 1):
         best_k, lowest_misclassification = find_best_k_with_misclassification_cv(
-            X[feature_combinations[iteration]], y, k_iterations = 40, n_fold = 10)
+            X[feature_combinations[iteration]], y, k_iterations = 50, n_fold = 10)
 
         row = {
             'number_words_female': 0,
@@ -177,6 +177,7 @@ def model_iterator_cv(X, y, feature_combinations, iterations):
                 pass
 
         results = results.append(row, ignore_index=True)
+        results.to_csv(r'/Users/dininduseneviratne/Library/CloudStorage/OneDrive-Uppsalauniversitet/Statistical Machine Learning/project-results/results_8191.csv')
         print(str(iteration) + " OUT OF " + str(iterations) + " ITERATIONS COMPLETED - " + str(iteration*100/iterations) + "%")
 
     return results
