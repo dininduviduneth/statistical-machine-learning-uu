@@ -34,6 +34,17 @@ def draw_histogram(data, bins, xlabel, ylabel, title, plot_mean = False):
         pass
 
     plt.show()
+    
+def draw_double_histogram(data_1, data_2, bins, data_1_legend, data_2_legend, xlabel, ylabel, title, plot_mean = False):
+    from matplotlib import pyplot
+
+    pyplot.hist(data_1, bins, alpha=0.5, label=data_1_legend)
+    pyplot.hist(data_2, bins, alpha=0.5, label=data_2_legend)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.title(title)
+    pyplot.legend(loc='upper right')
+    pyplot.show()
 
 def plot_scatter(data_x, data_y, xlabel, ylabel, title, plot_line = False):
     """
