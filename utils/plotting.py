@@ -18,7 +18,7 @@ def draw_histogram(data, bins, xlabel, ylabel, title, plot_mean = False):
         No return - only plots the histogram
     """
 
-    plt.hist(data, bins)
+    plt.hist(data, bins, color = "dodgerblue")
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
     plt.title(title)
@@ -65,15 +65,17 @@ def plot_scatter(data_x, data_y, xlabel, ylabel, title, plot_line = False):
         a, b = np.polyfit(data_x, data_y, 1)
 
         #add points to plot
-        plt.scatter(data_x, data_y)
+        plt.scatter(data_x, data_y, c = "dodgerblue", alpha = 1)
 
         #add line of best fit to plot
         plt.plot(data_x, a*data_x+b, color='red')
     else:
-        pass
+        #add points to plot
+        plt.scatter(data_x, data_y, c = "dodgerblue", alpha = 1)
 
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
+    plt.grid()
     plt.title(title)
 
     plt.show()
