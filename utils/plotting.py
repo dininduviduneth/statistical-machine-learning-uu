@@ -73,9 +73,10 @@ def plot_scatter(data_x, data_y, xlabel, ylabel, title, plot_line = False):
         #add points to plot
         plt.scatter(data_x, data_y, c = "dodgerblue", alpha = 1)
 
-    plt.xlabel(xlabel)
-    plt.ylabel(ylabel)
-    plt.grid()
+    plt.rcParams.update({'font.size': 15})
+    plt.xlabel(xlabel, fontsize = 14)
+    plt.ylabel(ylabel, fontsize = 14)
+    plt.grid(alpha = 0.5)
     plt.title(title)
 
     plt.show()
