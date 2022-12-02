@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import sklearn.neighbors as skl_nb
 import sklearn.model_selection as skl_ms
+import sklearn.preprocessing as prep
 import matplotlib.pyplot as plt
 
 # Model Iteration
@@ -93,7 +94,7 @@ def plot_misclassification(X_train, y_train, X_test, y_test, k_iterations):
 
 def find_best_k_with_misclassification_cv(X, y, k_iterations, n_fold = 10):
 
-    cv = skl_ms.KFold(n_splits=n_fold, random_state=2, shuffle=True) 
+    cv = skl_ms.KFold(n_splits=n_fold, random_state=123, shuffle=True) 
     K = np.arange(1, k_iterations)
 
     misclassification = np.zeros(len(K))
@@ -181,3 +182,11 @@ def model_iterator_cv(X, y, feature_combinations, iterations):
         print(str(iteration) + " OUT OF " + str(iterations) + " ITERATIONS COMPLETED - " + str(iteration*100/iterations) + "%")
 
     return results
+
+def data_normalizer(data_x):
+    scaler = prep.MinMaxScaler()
+    # d = prep.normalize(data_x, axis=0)
+    d = scaler.fit_transform(data_x)
+    scaled_data_x = pd.DataFrame(d, columns=data_x.columns)
+    
+    return scaled_data_x
