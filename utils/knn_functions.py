@@ -162,7 +162,7 @@ def model_iterator_cv(X, y, feature_combinations, iterations):
     results = pd.DataFrame(columns=results_column_names)
 
     for iteration in range(1, iterations + 1):
-        if len(feature_combinations[iteration]) >= 8:
+        if len(feature_combinations[iteration]) >= 7:
             best_k, lowest_misclassification = find_best_k_with_misclassification_cv(
                 X[feature_combinations[iteration]], y, k_iterations = 50, n_fold = 10)
 
