@@ -3,6 +3,8 @@ import pandas as pd
 import sklearn.neighbors as skl_nb
 import sklearn.model_selection as skl_ms
 import sklearn.preprocessing as prep
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 
 # Model Iteration
@@ -94,7 +96,7 @@ def plot_misclassification(X_train, y_train, X_test, y_test, k_iterations):
 
 def find_best_k_with_misclassification_cv(X, y, k_iterations, n_fold = 10):
 
-    cv = skl_ms.KFold(n_splits=n_fold, random_state=123, shuffle=True) 
+    cv = skl_ms.KFold(n_splits=n_fold, random_state=2, shuffle=True) 
     K = np.arange(1, k_iterations)
 
     misclassification = np.zeros(len(K))
@@ -102,6 +104,17 @@ def find_best_k_with_misclassification_cv(X, y, k_iterations, n_fold = 10):
     for train_index, val_index in cv.split(X):
         X_train, X_val = X.iloc[train_index], X.iloc[val_index]
         y_train, y_val = y.iloc[train_index], y.iloc[val_index]
+
+        PredictorScaler = StandardScaler()
+
+        # Storing the fit object for later reference
+        PredictorScalerFit = PredictorScaler.fit(X_train)
+ 
+        # Generating the standardized values of X and y
+        X_train = PredictorScalerFit.transform(X_train)
+
+        # Generating the standardized values of X and y
+        X_val = PredictorScalerFit.transform(X_val)
         
         for j, k in enumerate(K):
             model = skl_nb.KNeighborsClassifier(n_neighbors=k) 
@@ -149,38 +162,41 @@ def model_iterator_cv(X, y, feature_combinations, iterations):
     results = pd.DataFrame(columns=results_column_names)
 
     for iteration in range(1, iterations + 1):
-        best_k, lowest_misclassification = find_best_k_with_misclassification_cv(
-            X[feature_combinations[iteration]], y, k_iterations = 50, n_fold = 10)
+        if len(feature_combinations[iteration]) >= 8:
+            best_k, lowest_misclassification = find_best_k_with_misclassification_cv(
+                X[feature_combinations[iteration]], y, k_iterations = 50, n_fold = 10)
 
-        row = {
-            'number_words_female': 0,
-            'total_words': 0,
-            'number_of_words_lead': 0,
-            'difference_in_words_lead_and_co_lead': 0,
-            'number_of_male_actors': 0,
-            'year': 0,
-            'number_of_female_actors': 0,
-            'number_words_male': 0,
-            'gross': 0,
-            'mean_age_male': 0,
-            'mean_age_female': 0,
-            'age_lead': 0,
-            'age_co_lead': 0,
-            'best_k': best_k,
-            'lowest_misclassification': lowest_misclassification,
-            'iteration_no': iteration
-        }
+            row = {
+                'number_words_female': 0,
+                'total_words': 0,
+                'number_of_words_lead': 0,
+                'difference_in_words_lead_and_co_lead': 0,
+                'number_of_male_actors': 0,
+                'year': 0,
+                'number_of_female_actors': 0,
+                'number_words_male': 0,
+                'gross': 0,
+                'mean_age_male': 0,
+                'mean_age_female': 0,
+                'age_lead': 0,
+                'age_co_lead': 0,
+                'best_k': best_k,
+                'lowest_misclassification': lowest_misclassification,
+                'iteration_no': iteration
+            }
 
-        for key, value in row.items():
-            if key in feature_combinations[iteration]:
-                row[key] = 1
-            else:
-                pass
+            for key, value in row.items():
+                if key in feature_combinations[iteration]:
+                    row[key] = 1
+                else:
+                    pass
 
-        results = results.append(row, ignore_index=True)
-        results.to_csv(r'/Users/dininduseneviratne/Library/CloudStorage/OneDrive-Uppsalauniversitet/Statistical Machine Learning/project-results/results_8191.csv')
-        print(str(iteration) + " OUT OF " + str(iterations) + " ITERATIONS COMPLETED - " + str(iteration*100/iterations) + "%")
+            results = results.append(row, ignore_index=True)
+            results.to_csv(r'/Users/dininduseneviratne/Library/CloudStorage/OneDrive-Uppsalauniversitet/Statistical Machine Learning/project-results/results_8191.csv')
+            print(str(iteration) + " OUT OF " + str(iterations) + " ITERATIONS COMPLETED - " + str(iteration*100/iterations) + "%")
 
+        else: 
+            pass
     return results
 
 def data_normalizer(data_x):
@@ -190,3 +206,28 @@ def data_normalizer(data_x):
     scaled_data_x = pd.DataFrame(d, columns=data_x.columns)
     
     return scaled_data_x
+
+# Function to predict results
+def generate_prediction_results(X_train, y_train, X_test, y_test, k_value):
+    PredictorScaler = StandardScaler()
+ 
+    # Storing the fit object for later reference
+    PredictorScalerFit = PredictorScaler.fit(X_train)
+    
+    # Generating the standardized values of X and y
+    X_train_scaled = PredictorScalerFit.transform(X_train)
+
+    # Generating the standardized values of X and y
+    X_test_scaled = PredictorScalerFit.transform(X_test)
+
+    model = skl_nb.KNeighborsClassifier(n_neighbors = k_value)
+    model.fit(X_train_scaled, y_train)
+    train_prediction = model.predict(X_train_scaled)
+    test_prediction = model.predict(X_test_scaled)
+    train_misclassification = np.mean(train_prediction != y_train.to_numpy())
+    test_misclassification = np.mean(test_prediction != y_test.to_numpy())
+
+    print("Train Misclassification Error: " + str(train_misclassification*100) + "%")
+    print("Train Accuracy: " + str((1 - train_misclassification)*100) + "%")
+    print("Test Misclassification Error: " + str(test_misclassification*100) + "%")
+    print("Test Accuracy: " + str((1 - test_misclassification)*100) + "%")
