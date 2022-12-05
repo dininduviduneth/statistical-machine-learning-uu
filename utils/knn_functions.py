@@ -138,6 +138,18 @@ def generate_prediction_results(X_train, y_train, X_test, y_test, k_value):
     print("Test Misclassification Error: " + str(test_misclassification*100) + "%")
     print("Test Accuracy: " + str((1 - test_misclassification)*100) + "%")
 
+def generate_prediction_results_without_scaling(X_train, y_train, X_test, y_test, k_value):
+    model = skl_nb.KNeighborsClassifier(n_neighbors = k_value)
+    model.fit(X_train, y_train)
+    train_prediction = model.predict(X_train)
+    test_prediction = model.predict(X_test)
+    train_misclassification = np.mean(train_prediction != y_train.to_numpy())
+    test_misclassification = np.mean(test_prediction != y_test.to_numpy())
+
+    print("Train Misclassification Error: " + str(train_misclassification*100) + "%")
+    print("Train Accuracy: " + str((1 - train_misclassification)*100) + "%")
+    print("Test Misclassification Error: " + str(test_misclassification*100) + "%")
+    print("Test Accuracy: " + str((1 - test_misclassification)*100) + "%")
 
 # The following functions are used for prior versions - v3 and below
 def model_iterator(X_train, y_train, X_test, y_test, feature_combinations, iterations):
