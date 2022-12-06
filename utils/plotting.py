@@ -38,8 +38,8 @@ def draw_histogram(data, bins, xlabel, ylabel, title, plot_mean = False):
 def draw_double_histogram(data_1, data_2, bins, data_1_legend, data_2_legend, xlabel, ylabel, title, plot_mean = False):
     from matplotlib import pyplot
 
-    pyplot.hist(data_1, bins, alpha=0.5, label=data_1_legend)
-    pyplot.hist(data_2, bins, alpha=0.5, label=data_2_legend)
+    pyplot.hist(data_1, bins, alpha=0.5, label=data_1_legend, color = "dodgerblue")
+    pyplot.hist(data_2, bins, alpha=0.3, label=data_2_legend, color = "red")
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
     plt.title(title)
