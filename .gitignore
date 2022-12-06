@@ -1,3 +1,4 @@
 utils/.ipynb_checkpoints
 data_analysis/.ipynb_checkpoints
 utils/__pycache__/
+.DS_Store
