@@ -35,15 +35,19 @@ def draw_histogram(data, bins, xlabel, ylabel, title, plot_mean = False):
 
     plt.show()
     
-def draw_double_histogram(data_1, data_2, bins, data_1_legend, data_2_legend, xlabel, ylabel, title, plot_mean = False):
+def draw_double_histogram(data_1, data_2, bins, data_1_legend, data_2_legend, xlabel, ylabel, title, show_legend = False, plot_mean = False):
     from matplotlib import pyplot
 
     pyplot.hist(data_1, bins, alpha=0.5, label=data_1_legend, color = "dodgerblue")
     pyplot.hist(data_2, bins, alpha=0.3, label=data_2_legend, color = "red")
-    plt.xlabel(xlabel)
-    plt.ylabel(ylabel)
+    plt.rcParams.update({'font.size': 12})
+    plt.xlabel(xlabel, fontsize = 14)
+    plt.ylabel(ylabel, fontsize = 14)
     plt.title(title)
-    pyplot.legend(loc='upper right')
+
+    if show_legend:
+        pyplot.legend(loc='center right', bbox_to_anchor=(1.30, 0.5))
+    
     pyplot.show()
 
 def plot_scatter(data_x, data_y, xlabel, ylabel, title, plot_line = False):
