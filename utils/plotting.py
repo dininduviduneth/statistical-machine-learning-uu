@@ -19,8 +19,9 @@ def draw_histogram(data, bins, xlabel, ylabel, title, plot_mean = False):
     """
 
     plt.hist(data, bins, color = "dodgerblue")
-    plt.xlabel(xlabel)
-    plt.ylabel(ylabel)
+    plt.rcParams.update({'font.size': 15})
+    plt.xlabel(xlabel, fontsize=17)
+    plt.ylabel(ylabel, fontsize=17)
     plt.title(title)
 
     if plot_mean:
